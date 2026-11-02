@@ -320,7 +320,7 @@
   }
   const about = () => {
     const T = t();
-    return `<section class="wrap page"><h1>${T.aboutH}</h1>${T.aboutP.map(x => `<p>${x}</p>`).join('')}<h2>${T.visit}</h2><address>Montageweg 35<br>1948 PH Beverwijk</address><p>${T.hours}</p><a class="btn line" href="${ROUTE}" target="_blank" rel="noopener" style="justify-self:start">${T.route}</a><h2>${T.returns}</h2><p>${T.returnsP}</p><h2>${T.samples}</h2><p>${T.samplesP(eur(SAMPLE))}</p><h2>${T.shipping}</h2><div class="rates">${Object.keys(SHIP).map(c => `<div class="row"><span>${esc(countryName(c))}</span><span>${eur(SHIP[c])}</span></div>`).join('')}</div></section>`;
+    return `<section class="wrap page"><h1>${T.aboutH}</h1>${T.aboutP.map(x => `<p>${x}</p>`).join('')}<h2>${T.visit}</h2><address><bdi>Montageweg 35</bdi><br><bdi>1948 PH Beverwijk</bdi></address><p>${T.hours}</p><a class="btn line" href="${ROUTE}" target="_blank" rel="noopener" style="justify-self:start">${T.route}</a><h2>${T.returns}</h2><p>${T.returnsP}</p><h2>${T.samples}</h2><p>${T.samplesP(eur(SAMPLE))}</p><h2>${T.shipping}</h2><div class="rates">${Object.keys(SHIP).map(c => `<div class="row"><span>${esc(countryName(c))}</span><span>${eur(SHIP[c])}</span></div>`).join('')}</div></section>`;
   };
 
   function lineTotal(l) { return l.sample ? SAMPLE : l.len * find(l.slug).price; }
@@ -351,7 +351,7 @@
       <div class="side end">${Live.admin ? `<a class="nav hide-s" href="#beheer">${T.admin}</a>` : ''}${langSelect('lang')}<button class="nav" id="bag">${T.bag} (${state.cart.length})</button></div></div>`;
     $('#drawer').innerHTML = `<button class="x" id="drawer-close">${T.close}</button><a href="#collectie">${T.all}</a><a href="#winkel">${T.about}</a><a href="#bestelling">${T.track}</a>${Live.admin ? `<a href="#beheer">${T.admin}</a>` : ''}${langSelect('lang-m')}`;
     $('#foot').innerHTML = `<div class="wrap"><div class="foot-top">${RING}<b dir="ltr">MERVEX</b></div><div class="foot">
-      <div><h3>Mervex Textile</h3><address>Montageweg 35<br>1948 PH Beverwijk</address></div>
+      <div><h3>Mervex Textile</h3><address><bdi>Montageweg 35</bdi><br><bdi>1948 PH Beverwijk</bdi></address></div>
       <div><h3>${T.contact}</h3><a href="${wa(T.waText('Mervex', ''))}" target="_blank" rel="noopener" dir="ltr">WhatsApp +31 6 84647141</a><a href="https://www.instagram.com/mervex_textile/" target="_blank" rel="noopener" dir="ltr">Instagram @mervex_textile</a></div>
       <div><h3>${T.service}</h3><a href="#bestelling">${T.track}</a><a href="#winkel">${T.shipping}</a><a href="#winkel">${T.returns}</a><a href="#winkel">${T.samples}</a></div>
       <div><h3>${T.about}</h3><span>${T.legal}</span></div></div></div>`;
