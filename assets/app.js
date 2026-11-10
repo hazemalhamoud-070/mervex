@@ -82,7 +82,7 @@
   function card(p) {
     const c = p.colours[0];
     return `<a class="card" href="#p-${p.slug}">
-      <div class="shot"><img src="${img(c.id, true)}" alt="${esc(name(p))}, ${esc(cn(c))}" loading="lazy" decoding="async" width="440" height="550">${p.models === false ? '' : `<img class="alt" src="${modelImg(p.slug, 'prinses')}" alt="" loading="lazy" decoding="async" width="720" height="960">`}</div>
+      <div class="shot"><img src="${img(c.id, true)}" alt="${esc(name(p))}, ${esc(cn(c))}" loading="lazy" decoding="async" width="440" height="550">${p.colours[1] ? `<img class="alt" src="${img(p.colours[1].id, true)}" alt="" loading="lazy" decoding="async" width="480" height="600">` : ''}</div>
       <h3>${esc(name(p))}</h3>
       <div class="meta"><span>${t().from} ${eur(p.price)} ${t().perM}</span><span>${t().colours(p.colours.length)}</span></div>
       <div class="dots">${p.colours.slice(0, 8).map(x => `<i style="background:${x.rgb}"></i>`).join('')}</div>
@@ -102,12 +102,10 @@
     return `
     <section class="hero">
       ${pic('hero-1', 0)}${pic('hero-2', 1)}${pic('hero-3', 2)}
-      <div class="hero-in">
-        ${RING}
-        <h1 class="hero-word" aria-label="Mervex">${[...'MERVEX'].map(l => `<span>${l}</span>`).join('')}</h1>
-        <div class="hero-sub">TEXTILE</div>
+      <div class="hero-in wrap">
         <p class="hero-kick">${T.heroKicker}</p>
-        <a class="btn line" href="#collectie">${T.heroCta}</a>
+        <h1 class="hero-title">${T.heroTitle}</h1>
+        <div class="hero-act"><a class="btn" href="#collectie">${T.heroCta}</a><a class="btn line" href="${wa(T.waText('Mervex', ''))}" target="_blank" rel="noopener">WhatsApp</a></div>
       </div>
       <div class="cue"><span>${T.scroll}</span><i></i></div>
     </section>
@@ -124,19 +122,20 @@
       <div class="hz-head"><h2>${T.colH}</h2><p>${T.colP}</p></div>
       ${COLLECTIONS.map(([k, n, href]) => `<a class="panel" href="${href}"><img src="${brand(n)}" alt="" loading="lazy" decoding="async"><span>${esc(T.cols[k])}</span></a>`).join('')}
     </div></section>
+    <section class="wrap band">
+      <div class="head" data-rise><h2>${T.latest}</h2><a href="#collectie">${T.all}</a></div>
+      <div class="grid">${fabrics().slice(0, 8).map(card).join('')}</div>
+    </section>
     <section class="motion">
       <video data-src="video/DXbjoczjQIU.mp4" poster="img/DXbjoczjQIU.webp" muted loop playsinline preload="none"></video>
       <video data-src="video/DRMf3AuDH7K.mp4" poster="img/DRMf3AuDH7K.webp" muted loop playsinline preload="none"></video>
       <video data-src="video/DPqqpYcjC3K.mp4" poster="img/DPqqpYcjC3K.webp" muted loop playsinline preload="none"></video>
       <div class="motion-cap"><h2>${T.motionH}</h2><p>${T.motionP}</p></div>
     </section>
-    <section class="wrap band atelier">
-      <div class="gown" data-clip><img src="${brand('gown-gold')}" alt="Mervex" loading="lazy" data-parallax></div>
-      <div class="copy" data-rise>
-        <h2>${T.toDress}</h2><p>${T.toDressP}</p>
-        <div class="fabs" role="group" aria-label="${T.all}">${ATELIER.map(s => { const p = find(s); return `<button class="fab" data-atelier="${s}" aria-pressed="${s === state.atelier}" aria-label="${esc(name(p))}"><img src="${img(p.colours[0].id, true)}" alt="" loading="lazy"></button>`; }).join('')}</div>
-        <div class="dress-row" id="dress-row">${atelierRow()}</div>
-      </div>
+    <section class="wrap band inspire">
+      <div class="copy" data-rise><h2>${T.toDress}</h2><p>${T.toDressP}</p><a class="btn line" href="${wa(T.waText('Mervex', ''))}" target="_blank" rel="noopener">WhatsApp</a></div>
+      <figure data-clip><img src="${brand('gown-gold')}" alt="" loading="lazy" data-parallax></figure>
+      <figure data-clip><img src="${brand('gown-black')}" alt="" loading="lazy" data-parallax></figure>
     </section>
     <section class="wrap" style="padding-bottom:clamp(72px,11vw,160px)">
       <div class="head" data-rise><h2>${T.byColour}</h2><a href="#collectie">${T.all}</a></div>
@@ -168,14 +167,13 @@
     const c = p.colours.find(x => x.id === colourId) || p.colours[0];
     const max = Math.floor(stockOf(c) * 2) / 2;
     const out = max < MIN_M;
-    const models = p.models === false ? [] : MODELS;
     pick = { p, c, len: Math.max(MIN_M, Math.min(keepLen || 2, max)), out };
     return `<div class="wrap crumb"><a href="#collectie">${T.all}</a> / ${esc(T.types[p.type])}</div>
     <section class="wrap pdp">
       <div class="stage">
         <div class="main" id="stage"><img src="${img(c.id)}" alt="${esc(name(p))}, ${esc(cn(c))}" fetchpriority="high"></div>
         <p class="stage-note" id="stage-note" hidden></p>
-        <div class="thumbs"><button aria-current="true" data-stage="img" aria-label="${esc(cn(c))}"><img src="${img(c.id, true)}" alt=""></button>${c.video ? `<button class="play" data-stage="video">${T.video}</button>` : ''}${models.map(k => `<button data-stage="model" data-model="${k}" aria-label="${T.models[k]}"><img src="${modelImg(p.slug, k)}" alt="" loading="lazy"></button>`).join('')}</div>
+        <div class="thumbs"><button aria-current="true" data-stage="img" aria-label="${esc(cn(c))}"><img src="${img(c.id, true)}" alt=""></button>${c.video ? `<button class="play" data-stage="video">${T.video}</button>` : ''}</div>
       </div>
       <div class="buy">
         <div><h1>${esc(name(p))}</h1><p class="sub">${esc(desc(p))}</p></div>
@@ -196,7 +194,6 @@
         <div class="total"><span>${T.total}</span><b id="total"></b></div>
         <div class="stack">
           <button class="btn full" id="add"${out ? ' disabled' : ''}>${out ? T.soldOut : T.add}</button>
-          ${models.length ? `<button class="btn line full" id="as-dress">${T.asDress}</button>` : ''}
           <button class="btn line full" id="sample">${T.sample} (${eur(SAMPLE)})</button>
           <a class="btn line full" href="${wa(T.waText(name(p), cn(c)))}" target="_blank" rel="noopener">${T.waThis}</a>
         </div>
@@ -345,9 +342,9 @@
     document.documentElement.lang = state.lang;
     document.documentElement.dir = rtl() ? 'rtl' : 'ltr';
     document.title = T.title;
-    $('#top').innerHTML = `<div id="demo-bar">${T.demo}</div><div class="wrap bar">
+    $('#top').innerHTML = `<a class="skip" href="#view">${T.skip}</a><div id="demo-bar">${T.demo}</div><div class="wrap bar">
       <div class="side start"><button class="nav burger" id="burger">${T.menu}</button><a class="nav" href="#collectie">${T.all}</a><a class="nav" href="#winkel">${T.about}</a><a class="nav" href="#bestelling">${T.track}</a></div>
-      <a class="mark" href="#home" aria-label="Mervex Textile" dir="ltr">MERVEX</a>
+      <a class="mark" href="#home" aria-label="Mervex Textile" dir="ltr" translate="no">MERVEX</a>
       <div class="side end">${Live.admin ? `<a class="nav hide-s" href="#beheer">${T.admin}</a>` : ''}${langSelect('lang')}<button class="nav" id="bag">${T.bag} (${state.cart.length})</button></div></div>`;
     $('#drawer').innerHTML = `<button class="x" id="drawer-close">${T.close}</button><a href="#collectie">${T.all}</a><a href="#winkel">${T.about}</a><a href="#bestelling">${T.track}</a>${Live.admin ? `<a href="#beheer">${T.admin}</a>` : ''}${langSelect('lang-m')}`;
     $('#foot').innerHTML = `<div class="wrap"><div class="foot-top">${RING}<b dir="ltr">MERVEX</b></div><div class="foot">
@@ -372,8 +369,7 @@
 
   function heroIn(delay) {
     if (!window.gsap || reduced) return;
-    gsap.from('.hero-word span', { yPercent: 70, autoAlpha: 0, duration: 1.2, stagger: .07, ease: 'power4.out', delay });
-    gsap.from('.hero .ring, .hero-sub, .hero-kick, .hero .btn, .cue', { y: 20, autoAlpha: 0, duration: 1, stagger: .12, ease: 'power3.out', delay: delay + .5 });
+    gsap.from('.hero-kick, .hero-title, .hero-act, .cue', { y: 28, autoAlpha: 0, duration: 1.1, stagger: .14, ease: 'power3.out', delay });
   }
   function intro() {
     let seen = true;
